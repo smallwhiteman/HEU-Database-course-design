@@ -1,0 +1,3 @@
+-- 添加一个管理员用户（role=1 表示管理员）
+INSERT INTO `user` (username, password, telephone, role) 
+VALUES ('admin', '123456', '15239628790', 1);
