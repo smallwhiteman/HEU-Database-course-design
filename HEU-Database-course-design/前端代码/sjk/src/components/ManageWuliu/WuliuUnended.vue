@@ -14,7 +14,16 @@
                 <el-table-column prop="deliver_time" label="预计送餐时间" width="200" align="center">
 
                 </el-table-column>
-
+              <el-table-column label="操作" width="150" align="center">
+                <template slot-scope="scope">
+                  <el-popconfirm
+                      title="确认该订单已送达完成？"
+                      @confirm="completeDelivery(scope.row.order_id)"
+                  >
+                    <el-button slot="reference" type="success" size="small">标记完成</el-button>
+                  </el-popconfirm>
+                </template>
+              </el-table-column>
             </el-table>
 
 
@@ -42,6 +51,14 @@ export default {
                 }
             })
         },
+      completeDelivery(order_id) {
+        this.$axios.post("/api/manager/complete_delivery", { order_id }).then(res => {
+          if (res.data.status === 200) {
+            this.$message.success("已标记为完成");
+            this.getdata();
+          }
+        })
+      }
 
     }
 }

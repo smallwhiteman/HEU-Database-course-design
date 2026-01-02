@@ -6,8 +6,8 @@ class BaseConfig(object):
     HOST = '127.0.0.1'
     PORT = "3306"
     USERNAME = "root"
-    PASSWORD = "NewPass123!" # 你自己电脑数据库的密码
-    DBNAME = 'keyal_hnu'
+    PASSWORD = "NewPass123!" 
+    DBNAME = 'keyal_hnu_bak'
 
     REDIS_HOST = '127.0.0.1'
     REDIS_PORT = 6379

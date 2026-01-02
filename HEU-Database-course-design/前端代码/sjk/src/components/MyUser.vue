@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="header">
-            &nbsp;&nbsp; HNU外卖平台
+            &nbsp;&nbsp; HNU外卖平台---用户端
         </div>
         <div class="body">
             <!-- 左侧导航栏 -->
@@ -109,7 +109,7 @@ export default {
     line-height: 10vh;
     font-size: 25px;
     font-weight: 800;
-    background-color: #595959;
+    background-color: #e3e3e3;
     /* padding-left: 100px; */
 }
 

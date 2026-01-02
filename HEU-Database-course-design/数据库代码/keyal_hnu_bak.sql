@@ -1,3 +1,26 @@
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : ±¾µØ
+ Source Server Type    : MySQL
+ Source Server Version : 80032
+ Source Host           : localhost:3306
+ Source Schema         : keyal_hnu
+
+ Target Server Type    : MySQL
+ Target Server Version : 80032
+ File Encoding         : 65001
+
+ Date: 20/11/2023 19:58:13
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+
+
+
+
 -- ----------------------------
 -- Table structure for dispatcher
 -- ----------------------------
@@ -13,24 +36,45 @@ CREATE TABLE `dispatcher`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Records of dispatcher
+-- ----------------------------
+INSERT INTO `dispatcher` VALUES ('111111', 'Â·ÈË¼×', '11111111111');
+INSERT INTO `dispatcher` VALUES ('222222', 'Â·ÈËÒÒ', '22222222222');
+INSERT INTO `dispatcher` VALUES ('333333', 'Â·ÈË±û', '33333333333');
+INSERT INTO `dispatcher` VALUES ('114514', 'ºÎÒâÎ¶', '44444444444');
+
+-- ----------------------------
 -- Table structure for fastfood_shop
 -- ----------------------------
--- æ·»åŠ avg_scoreå’Œtotal_commentså­—æ®µ
+-- Ìí¼Óavg_scoreºÍtotal_comments×Ö¶Î
 DROP TABLE IF EXISTS `fastfood_shop`;
 CREATE TABLE `fastfood_shop`  (
   `shop_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `price` int NOT NULL COMMENT 'ä»·æ ¼',
-  `m_sale_v` int NOT NULL COMMENT 'æœˆé”€å”®é‡',
-  `avg_score` DECIMAL(3, 2) DEFAULT 0.00 COMMENT 'å¹³å‡è¯„åˆ†(0.00-5.00)',
-  `total_comments` int DEFAULT 0 COMMENT 'æ€»è¯„è®ºæ•°',
-  `n_sale_v` int DEFAULT 0 COMMENT 'å¹´é”€å”®é‡(æ ¹æ®E-Rå›¾æ–°å¢)',
-  `attribute` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT 'åº—é“ºå±æ€§',
+  `price` int NOT NULL COMMENT '¼Û¸ñ',
+  `m_sale_v` int NOT NULL COMMENT 'ÔÂÏúÊÛÁ¿',
+  `avg_score` DECIMAL(3, 2) DEFAULT 0.00 COMMENT 'Æ½¾ùÆÀ·Ö(0.00-5.00)',
+  `total_comments` int DEFAULT 0 COMMENT '×ÜÆÀÂÛÊı',
+  `n_sale_v` int DEFAULT 0 COMMENT 'ÄêÏúÊÛÁ¿(¸ù¾İE-RÍ¼ĞÂÔö)',
+  `attribute` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT 'µêÆÌÊôĞÔ',
   PRIMARY KEY (`shop_name`) USING BTREE,
   UNIQUE INDEX `shop_name`(`shop_name`) USING BTREE,
   INDEX `price`(`price`) USING BTREE,
   INDEX `m_sale_v`(`m_sale_v`) USING BTREE,
   INDEX `idx_avg_score`(`avg_score`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of fastfood_shop
+-- ----------------------------
+INSERT INTO `fastfood_shop` (`shop_name`, `price`, `m_sale_v`, `avg_score`, `total_comments`) VALUES 
+('»ÆÊóÀÇ¼¦¹«ìÒ', 15, 100, 4.50, 10),
+('ÌìÂí×ÔÑ¡·¹', 10, 200, 4.20, 15),
+('ÌìÂí²ö×ìÑ¼', 16, 61, 4.70, 8),
+('Ê¦´ó¿¾ÅÌ·¹', 12, 101, 4.30, 9),
+('Ê¦´óÕÂÇğ³´¼¦', 16, 99, 4.60, 7),
+('ÔÀÂ´»ãµ°³´·¹', 10, 101, 4.40, 6),
+('Ğ¡ÃÀÂéÀ±ÌÌ', 15, 103, 4.80, 5),
+('Â¡½­Öí½Å·¹', 20, 52, 4.90, 4);
 
 -- ----------------------------
 -- Table structure for oorder
@@ -59,19 +103,29 @@ CREATE TABLE `oorder`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Records of oorder
+-- ----------------------------
+INSERT INTO `oorder` VALUES (1, '»ÆÊóÀÇ¼¦¹«ìÒ', 12, 'ÈË¹¤¶©²Í', '13525188888', 'ÅË¿¡ºâ', '3Çø11', 0, '2025-12-16 14:35:17');
+INSERT INTO `oorder` VALUES (2, 'ÔÀÂ´»ãµ°³´·¹', 10, 'ÈË¹¤¶©²Í', '13525188888', '¸µ³Ì¿­', '3Çø11', 2, '2025-12-16 14:35:26');
+INSERT INTO `oorder` VALUES (3, 'Â¡½­Öí½Å·¹', 20, 'ÈË¹¤¶©²Í', '13525188888', 'Ë¼Ë¼', '3Çø9', 0, '2025-12-16 14:35:35');
+------------------------------------------------------------------------------------------------------------------------------
+
+-- (ĞŞ¸ÄÂï?)
+
+-- ----------------------------
 -- Table structure for comments
 -- ----------------------------
--- æ·»åŠ commentsè¡¨ --
+-- Ìí¼Ócomments±í --
 DROP TABLE IF EXISTS `comments`;
 CREATE TABLE `comments` (
-  `comment_id` INT NOT NULL AUTO_INCREMENT COMMENT 'è¯„è®ºID',
-  `shop_name` VARCHAR(50) NOT NULL COMMENT 'åº—é“ºåç§°',
-  `username` VARCHAR(50) NOT NULL COMMENT 'ç”¨æˆ·å',
+  `comment_id` INT NOT NULL AUTO_INCREMENT COMMENT 'ÆÀÂÛID',
+  `shop_name` VARCHAR(50) NOT NULL COMMENT 'µêÆÌÃû³Æ',
+  `username` VARCHAR(50) NOT NULL COMMENT 'ÓÃ»§Ãû',
   `telephone` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `score` TINYINT NOT NULL COMMENT 'è¯„åˆ†(1-5åˆ†)',
-  `content` TEXT COMMENT 'è¯„è®ºå†…å®¹',
-  `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'è¯„è®ºæ—¶é—´',
-  `is_deleted` TINYINT DEFAULT 0 COMMENT 'æ˜¯å¦åˆ é™¤(0=æ­£å¸¸,1=åˆ é™¤)',
+  `score` TINYINT NOT NULL COMMENT 'ÆÀ·Ö(1-5·Ö)',
+  `content` TEXT COMMENT 'ÆÀÂÛÄÚÈİ',
+  `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'ÆÀÂÛÊ±¼ä',
+  `is_deleted` TINYINT DEFAULT 0 COMMENT 'ÊÇ·ñÉ¾³ı(0=Õı³£,1=É¾³ı)',
   PRIMARY KEY (`comment_id`) USING BTREE,
   UNIQUE INDEX `comment_id` (`comment_id`) USING BTREE,
   INDEX `idx_shop_name` (`shop_name`) USING BTREE,
@@ -85,33 +139,56 @@ CREATE TABLE `comments` (
     REFERENCES `user` (`telephone`) 
     ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci 
-COMMENT = 'åº—é“ºè¯„è®ºè¡¨' ROW_FORMAT = DYNAMIC;
+COMMENT = 'µêÆÌÆÀÂÛ±í' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of comments
+-- ----------------------------
+INSERT INTO `comments` (`shop_name`, `username`, `telephone`, `score`, `content`) VALUES
+('»ÆÊóÀÇ¼¦¹«ìÒ', 'iu', '13525188888', 5, 'Î¶µÀ³¬¼¶ºÃ£¬¼¦ÈâºÜÄÛ£¬Åä²Ë·á¸»£¡'),
+('»ÆÊóÀÇ¼¦¹«ìÒ', 'mty', '15967789756', 3, 'Î¶µÀ²»´í£¬¾ÍÊÇÓĞµãÏÌ£¬ÏÂ´ÎÉÙ·ÅÑÎ'),
+('Ğ¡ÃÀÂéÀ±ÌÌ', 'iu', '13525188888', 4, 'ÌÀµ×Ò»°ã£¬²ËÆ·»¹ËãĞÂÏÊ'),
+('Â¡½­Öí½Å·¹', 'mty', '15967789756', 5, 'Öí½ÅìÀµÃºÜÀÃ£¬·Ç³£ÈëÎ¶£¡'),
+('ÌìÂí×ÔÑ¡·¹', 'iu', '13525188888', 4, 'ĞÔ¼Û±È¸ß£¬Ñ¡Ôñ¶àÑù');
 
 -- ----------------------------
 -- Table structure for orderway
 -- ----------------------------
 DROP TABLE IF EXISTS `orderway`;
 CREATE TABLE `orderway`  (
-  `orderway_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'è®¢é¤æ–¹å¼',
-  `count` int NOT NULL COMMENT 'è¯¥ç§æ–¹å¼çš„è®¢é¤æ•°é‡',
+  `orderway_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '¶©²Í·½Ê½',
+  `count` int NOT NULL COMMENT '¸ÃÖÖ·½Ê½µÄ¶©²ÍÊıÁ¿',
   PRIMARY KEY (`orderway_name`) USING BTREE,
   UNIQUE INDEX `orderway_name`(`orderway_name`) USING BTREE,
   INDEX `count`(`count`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Records of orderway
+-- ----------------------------
+INSERT INTO `orderway` VALUES ('ÍøÉÏ¶©²Í', 51);
+INSERT INTO `orderway` VALUES ('ÈË¹¤¶©²Í', 108);
+
+-- ----------------------------
 -- Table structure for server
 -- ----------------------------
 DROP TABLE IF EXISTS `server`;
 CREATE TABLE `server`  (
-  `service_id` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'æœåŠ¡å‘˜ç¼–å·',
+  `service_id` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '·şÎñÔ±±àºÅ',
   `service_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `fastfood_shop_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'æ‰€åœ¨çš„åº—é“ºåå­—',
+  `fastfood_shop_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT 'ËùÔÚµÄµêÆÌÃû×Ö',
   PRIMARY KEY (`service_id`) USING BTREE,
   UNIQUE INDEX `service_id`(`service_id`) USING BTREE,
   INDEX `service_name`(`service_name`) USING BTREE,
   INDEX `fastfood_shop_name`(`fastfood_shop_name`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of server
+-- ----------------------------
+INSERT INTO `server` VALUES ('100000', '·şÎñÔ±1ºÅ', 'Ê¦´ó¿¾ÅÌ·¹');
+INSERT INTO `server` VALUES ('100001', 'Ğ¡ÃÀ', 'Ğ¡ÃÀÂéÀ±ÌÌ');
+INSERT INTO `server` VALUES ('100002', '»ÆÊóÀÇ', '»ÆÊóÀÇ¼¦¹«ìÒ');
 
 -- ----------------------------
 -- Table structure for user
@@ -124,12 +201,20 @@ CREATE TABLE `user`  (
   `telephone` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `role` int NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `id`(`id`) USING BTREE COMMENT 'ä¸»é”®ç´¢å¼•ï¼Œé€‰UNIQUE',
+  UNIQUE INDEX `id`(`id`) USING BTREE COMMENT 'Ö÷¼üË÷Òı£¬Ñ¡UNIQUE',
   INDEX `username`(`username`) USING BTREE,
   INDEX `password`(`password`) USING BTREE,
   INDEX `telephone`(`telephone`) USING BTREE,
   INDEX `role`(`role`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES (2, 'iu', '123456789', '13525188888', 0);
+INSERT INTO `user` VALUES (3, 'mty', '123456', '15967789756', 0);
+-- ¹ÜÀíÔ±
+INSERT INTO `user` VALUES (4, 'admin', 'admin123', '13888888888', 1);
 
 -- ----------------------------
 -- Table structure for user_msg
@@ -154,15 +239,21 @@ CREATE TABLE `user_msg`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Records of user_msg
+-- ----------------------------
+INSERT INTO `user_msg` VALUES (2, 'ÀîÖª¶÷', 'ÄĞ', 18, '320836@qq.com', '13525199999', 'iu');
+INSERT INTO `user_msg` VALUES (3, 'ÂíÌìÓî', 'ÄĞ', 20, '787898@qq.com', '11111111111', 'ÂíÌìÓî');
+
+-- ----------------------------
 -- Table structure for wuliu
 -- ----------------------------
 DROP TABLE IF EXISTS `wuliu`;
 CREATE TABLE `wuliu`  (
-  `order_id` int NOT NULL COMMENT 'è®¢å•çš„ç¼–å·',
+  `order_id` int NOT NULL COMMENT '¶©µ¥µÄ±àºÅ',
   `cons_phone` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `disp_id` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `deliver_time` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `ended` int NOT NULL DEFAULT 0 COMMENT 'æ˜¯å¦ç»“æŸ',
+  `ended` int NOT NULL DEFAULT 0 COMMENT 'ÊÇ·ñ½áÊø',
   PRIMARY KEY (`order_id`) USING BTREE,
   UNIQUE INDEX `order_id`(`order_id`) USING BTREE,
   INDEX `cons_phone`(`cons_phone`) USING BTREE,
@@ -171,19 +262,22 @@ CREATE TABLE `wuliu`  (
   INDEX `ended`(`ended`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
+-- ----------------------------
+-- Records of wuliu
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for feedback
 -- ----------------------------
 DROP TABLE IF EXISTS `feedback`;
 CREATE TABLE `feedback` (
-  `feedback_id` INT NOT NULL AUTO_INCREMENT COMMENT 'åé¦ˆID',
-  `user_id` INT UNSIGNED NOT NULL COMMENT 'ç”¨æˆ·IDï¼ˆå¤–é”®å…³è”user.idï¼‰',
-  `username` VARCHAR(20) NOT NULL COMMENT 'ç”¨æˆ·å',
-  `telephone` VARCHAR(20) NOT NULL COMMENT 'ç”¨æˆ·ç”µè¯',
-  `feedback_content` TEXT NOT NULL COMMENT 'åé¦ˆå†…å®¹',
-  `feedback_type` VARCHAR(20) DEFAULT 'å»ºè®®' COMMENT 'åé¦ˆç±»å‹ï¼šæŠ•è¯‰/å»ºè®®/å’¨è¯¢/å…¶ä»–',
-  `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'åˆ›å»ºæ—¶é—´',
+  `feedback_id` INT NOT NULL AUTO_INCREMENT COMMENT '·´À¡ID',
+  `user_id` INT UNSIGNED NOT NULL COMMENT 'ÓÃ»§ID£¨Íâ¼ü¹ØÁªuser.id£©',
+  `username` VARCHAR(20) NOT NULL COMMENT 'ÓÃ»§Ãû',
+  `telephone` VARCHAR(20) NOT NULL COMMENT 'ÓÃ»§µç»°',
+  `feedback_content` TEXT NOT NULL COMMENT '·´À¡ÄÚÈİ',
+  `feedback_type` VARCHAR(20) DEFAULT '½¨Òé' COMMENT '·´À¡ÀàĞÍ£ºÍ¶Ëß/½¨Òé/×ÉÑ¯/ÆäËû',
+  `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '´´½¨Ê±¼ä',
   PRIMARY KEY (`feedback_id`) USING BTREE,
   UNIQUE KEY `idx_feedback_id` (`feedback_id`) USING BTREE,
   INDEX `idx_user_id` (`user_id`) USING BTREE,
@@ -193,7 +287,19 @@ CREATE TABLE `feedback` (
     REFERENCES `user` (`id`) 
     ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_unicode_ci 
-COMMENT = 'ç”¨æˆ·åé¦ˆè¡¨' ROW_FORMAT = DYNAMIC;
+COMMENT = 'ÓÃ»§·´À¡±í' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of feedback
+-- ----------------------------
+INSERT INTO `feedback` (`user_id`, `username`, `telephone`, `feedback_content`, `feedback_type`) VALUES
+(2, 'iu', '13525188888', 'ÅäËÍËÙ¶ÈÓĞµãÂı£¬Ï£ÍûÄÜ¸Ä½ø', 'Í¶Ëß'),
+(2, 'iu', '13525188888', '½¨ÒéÔö¼Ó¸ü¶àÓÅ»İ»î¶¯', '½¨Òé'),
+(3, 'mty', '15967789756', 'ÉÌ¼Ò·şÎñÌ¬¶ÈºÜºÃ£¬µãÔŞ£¡', 'ÆäËû'),
+(2, 'iu', '13525188888', '¶©µ¥×´Ì¬¸üĞÂ²»¼°Ê±', 'Í¶Ëß'),
+(3, 'mty', '15967789756', 'Ï£ÍûÔö¼Ó¸ü¶àµÄÖ§¸¶·½Ê½', '½¨Òé');
+
+
 
 
 
@@ -223,7 +329,6 @@ COMMENT = 'ç”¨æˆ·åé¦ˆè¡¨' ROW_FORMAT = DYNAMIC;
 DROP VIEW IF EXISTS `sended_order`;
 CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `sended_order` AS select `oorder`.`order_id` AS `order_id`,`oorder`.`shop_name` AS `shop_name`,`oorder`.`order_money` AS `order_money`,`oorder`.`order_way` AS `order_way`,`oorder`.`cons_phone` AS `cons_phone`,`oorder`.`cons_name` AS `cons_name`,`oorder`.`cons_addre` AS `cons_addre`,`wuliu`.`disp_id` AS `disp_id`,`wuliu`.`deliver_time` AS `deliver_time`,`dispatcher`.`dispatcher_phone` AS `dispatcher_phone` from ((`oorder` join `wuliu` on((`oorder`.`order_id` = `wuliu`.`order_id`))) join `dispatcher` on((`wuliu`.`disp_id` = `dispatcher`.`dispatcher_id`))) where (`oorder`.`checked` = 2);
 
-
 -- ----------------------------
 -- View structure for sending_order
 -- ----------------------------
@@ -234,7 +339,8 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `sending_order` AS select
 -- ----------------------------
 -- View structure for shop_score_detail 
 -- ----------------------------
--- 1. åº—é“ºè¯„åˆ†è¯¦æƒ…è§†å›¾
+
+-- 1. µêÆÌÆÀ·ÖÏêÇéÊÓÍ¼
 CREATE OR REPLACE VIEW `shop_score_detail` AS
 SELECT 
     fs.`shop_name`,
@@ -242,15 +348,15 @@ SELECT
     fs.`m_sale_v`,
     fs.`avg_score`,
     fs.`total_comments`,
-    -- è¯„åˆ†ç­‰çº§ï¼ˆ5æ˜Ÿåˆ¶ï¼‰
+    -- ÆÀ·ÖµÈ¼¶£¨5ĞÇÖÆ£©
     CASE 
-        WHEN fs.avg_score >= 4.5 THEN 'â˜…â˜…â˜…â˜…â˜…'
-        WHEN fs.avg_score >= 4.0 THEN 'â˜…â˜…â˜…â˜…â˜†'
-        WHEN fs.avg_score >= 3.5 THEN 'â˜…â˜…â˜…â˜†â˜†'
-        WHEN fs.avg_score >= 3.0 THEN 'â˜…â˜…â˜†â˜†â˜†'
-        ELSE 'â˜…â˜†â˜†â˜†â˜†'
+        WHEN fs.avg_score >= 4.5 THEN '¡ï¡ï¡ï¡ï¡ï'
+        WHEN fs.avg_score >= 4.0 THEN '¡ï¡ï¡ï¡ï¡î'
+        WHEN fs.avg_score >= 3.5 THEN '¡ï¡ï¡ï¡î¡î'
+        WHEN fs.avg_score >= 3.0 THEN '¡ï¡ï¡î¡î¡î'
+        ELSE '¡ï¡î¡î¡î¡î'
     END AS `star_rating`,
-    -- æœ€è¿‘ä¸€æ¡è¯„è®º
+    -- ×î½üÒ»ÌõÆÀÂÛ
     (SELECT c.`content` 
      FROM `comments` c 
      WHERE c.`shop_name` = fs.`shop_name` 
@@ -264,7 +370,8 @@ ORDER BY fs.`avg_score` DESC;
 -----------------------------
 -- View structure for user_comments_history
 ----------------------------
--- 2. ç”¨æˆ·è¯„è®ºå†å²è§†å›¾
+
+-- 2. ÓÃ»§ÆÀÂÛÀúÊ·ÊÓÍ¼
 CREATE OR REPLACE VIEW `user_comments_history` AS
 SELECT 
     u.`id` AS `user_id`,
@@ -279,6 +386,8 @@ JOIN `comments` c ON u.`telephone` = c.`telephone`
 JOIN `fastfood_shop` fs ON c.`shop_name` = fs.`shop_name`
 WHERE c.`is_deleted` = 0
 ORDER BY c.`create_time` DESC;
+
+
 
 
 
@@ -386,7 +495,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- ----------------------------
 -- Triggers structure for table comments
 -- ----------------------------
--- 1. æ–°å¢è¯„è®ºæ—¶æ›´æ–°åº—é“ºå¹³å‡åˆ†
+-- 1. ĞÂÔöÆÀÂÛÊ±¸üĞÂµêÆÌÆ½¾ù·Ö
 DROP TRIGGER IF EXISTS `update_shop_score_insert`;
 DELIMITER ;;
 CREATE TRIGGER `update_shop_score_insert` 
@@ -396,7 +505,7 @@ BEGIN
     DECLARE avg_score DECIMAL(3,2);
     DECLARE total_comments INT;
     
-    -- è®¡ç®—æ–°çš„å¹³å‡åˆ†
+    -- ¼ÆËãĞÂµÄÆ½¾ù·Ö
     SELECT 
         AVG(score),
         COUNT(*)
@@ -407,33 +516,33 @@ BEGIN
     WHERE `shop_name` = NEW.shop_name 
       AND `is_deleted` = 0;
     
-    -- æ›´æ–°åº—é“ºè¡¨
+    -- ¸üĞÂµêÆÌ±í
     UPDATE `fastfood_shop` 
     SET 
         `avg_score` = avg_score,
         `total_comments` = total_comments
     WHERE `shop_name` = NEW.shop_name;
     
-    -- è®°å½•è¯„åˆ†å†å²
+    -- ¼ÇÂ¼ÆÀ·ÖÀúÊ·
     INSERT INTO `score_history` (`shop_name`, `new_score`, `change_reason`)
-    VALUES (NEW.shop_name, avg_score, 'æ–°å¢è¯„è®º');
+    VALUES (NEW.shop_name, avg_score, 'ĞÂÔöÆÀÂÛ');
 END;;
 DELIMITER ;
 
--- 2. æ›´æ–°è¯„è®ºæ—¶é‡æ–°è®¡ç®—è¯„åˆ†ï¼ˆç®€åŒ–ç‰ˆï¼‰
+-- 2. ¸üĞÂÆÀÂÛÊ±ÖØĞÂ¼ÆËãÆÀ·Ö£¨¼ò»¯°æ£©
 DROP TRIGGER IF EXISTS `update_shop_score_update`;
 DELIMITER ;;
 CREATE TRIGGER `update_shop_score_update` 
 AFTER UPDATE ON `comments` 
 FOR EACH ROW 
 BEGIN
-    -- å£°æ˜å˜é‡
+    -- ÉùÃ÷±äÁ¿
     DECLARE v_avg_score DECIMAL(3,2);
     DECLARE v_total_comments INT;
     
-    -- åªæœ‰å½“è¯„åˆ†è¢«ä¿®æ”¹æ—¶æ‰æ›´æ–°
+    -- Ö»ÓĞµ±ÆÀ·Ö±»ĞŞ¸ÄÊ±²Å¸üĞÂ
     IF OLD.score != NEW.score THEN
-        -- è®¡ç®—æ–°çš„å¹³å‡åˆ†ï¼ˆæ ¹æ®E-Rå›¾ï¼Œä½¿ç”¨shop_nameå…³è”ï¼‰
+        -- ¼ÆËãĞÂµÄÆ½¾ù·Ö£¨¸ù¾İE-RÍ¼£¬Ê¹ÓÃshop_name¹ØÁª£©
         SELECT 
             AVG(score),
             COUNT(*)
@@ -443,7 +552,7 @@ BEGIN
         FROM `comments` 
         WHERE `shop_name` = NEW.shop_name;
         
-        -- æ›´æ–°åº—é“ºè¡¨
+        -- ¸üĞÂµêÆÌ±í
         UPDATE `fastfood_shop` 
         SET 
             `avg_score` = IFNULL(v_avg_score, 0),
@@ -453,7 +562,8 @@ BEGIN
 END;;
 DELIMITER ;
 
--- 3. åˆ é™¤è¯„è®ºæ—¶æ›´æ–°è¯„åˆ†
+
+-- 3. É¾³ıÆÀÂÛÊ±¸üĞÂÆÀ·Ö
 DROP TRIGGER IF EXISTS `update_shop_score_delete`;
 DELIMITER ;;
 CREATE TRIGGER `update_shop_score_delete` 
@@ -463,7 +573,7 @@ BEGIN
     DECLARE avg_score DECIMAL(3,2);
     DECLARE total_comments INT;
     
-    -- é‡æ–°è®¡ç®—å¹³å‡åˆ†
+    -- ÖØĞÂ¼ÆËãÆ½¾ù·Ö
     SELECT 
         AVG(score),
         COUNT(*)
@@ -474,22 +584,22 @@ BEGIN
     WHERE `shop_name` = OLD.shop_name 
       AND `is_deleted` = 0;
     
-    -- å¤„ç†æ‰€æœ‰è¯„è®ºéƒ½è¢«åˆ é™¤çš„æƒ…å†µ
+    -- ´¦ÀíËùÓĞÆÀÂÛ¶¼±»É¾³ıµÄÇé¿ö
     IF avg_score IS NULL THEN
         SET avg_score = 0.00;
         SET total_comments = 0;
     END IF;
     
-    -- æ›´æ–°åº—é“ºè¡¨
+    -- ¸üĞÂµêÆÌ±í
     UPDATE `fastfood_shop` 
     SET 
         `avg_score` = avg_score,
         `total_comments` = total_comments
     WHERE `shop_name` = OLD.shop_name;
     
-    -- è®°å½•è¯„åˆ†å†å²
+    -- ¼ÇÂ¼ÆÀ·ÖÀúÊ·
     INSERT INTO `score_history` (`shop_name`, `old_score`, `new_score`, `change_reason`)
-    VALUES (OLD.shop_name, OLD.score, avg_score, 'åˆ é™¤è¯„è®º');
+    VALUES (OLD.shop_name, OLD.score, avg_score, 'É¾³ıÆÀÂÛ');
 END;;
 DELIMITER ;
 
@@ -510,7 +620,7 @@ DELIMITER ;
 -- Stored Procedures for comments
 -- ----------------------------
 
--- 1. æ·»åŠ è¯„è®ºçš„å­˜å‚¨è¿‡ç¨‹
+-- 1. Ìí¼ÓÆÀÂÛµÄ´æ´¢¹ı³Ì
 DROP PROCEDURE IF EXISTS `sp_add_comment`;
 DELIMITER ;;
 CREATE PROCEDURE `sp_add_comment`(
@@ -521,25 +631,25 @@ CREATE PROCEDURE `sp_add_comment`(
     IN p_content TEXT
 )
 BEGIN
-    -- å‚æ•°éªŒè¯
+    -- ²ÎÊıÑéÖ¤
     IF p_score < 1 OR p_score > 5 THEN
         SIGNAL SQLSTATE '45000' 
-        SET MESSAGE_TEXT = 'è¯„åˆ†å¿…é¡»åœ¨1-5åˆ†ä¹‹é—´';
+        SET MESSAGE_TEXT = 'ÆÀ·Ö±ØĞëÔÚ1-5·ÖÖ®¼ä';
     END IF;
     
-    -- æ£€æŸ¥ç”¨æˆ·æ˜¯å¦å­˜åœ¨
+    -- ¼ì²éÓÃ»§ÊÇ·ñ´æÔÚ
     IF NOT EXISTS (SELECT 1 FROM `user` WHERE `telephone` = p_telephone) THEN
         SIGNAL SQLSTATE '45000' 
-        SET MESSAGE_TEXT = 'ç”¨æˆ·ä¸å­˜åœ¨';
+        SET MESSAGE_TEXT = 'ÓÃ»§²»´æÔÚ';
     END IF;
     
-    -- æ£€æŸ¥åº—é“ºæ˜¯å¦å­˜åœ¨
+    -- ¼ì²éµêÆÌÊÇ·ñ´æÔÚ
     IF NOT EXISTS (SELECT 1 FROM `fastfood_shop` WHERE `shop_name` = p_shop_name) THEN
         SIGNAL SQLSTATE '45000' 
-        SET MESSAGE_TEXT = 'åº—é“ºä¸å­˜åœ¨';
+        SET MESSAGE_TEXT = 'µêÆÌ²»´æÔÚ';
     END IF;
     
-    -- æ’å…¥è¯„è®º
+    -- ²åÈëÆÀÂÛ
     INSERT INTO `comments` (
         `shop_name`,
         `username`,
@@ -554,34 +664,35 @@ BEGIN
         p_content
     );
     
-    -- è¿”å›æˆåŠŸä¿¡æ¯
-    SELECT 'è¯„è®ºæ·»åŠ æˆåŠŸ' AS `message`, LAST_INSERT_ID() AS `comment_id`;
+    -- ·µ»Ø³É¹¦ĞÅÏ¢
+    SELECT 'ÆÀÂÛÌí¼Ó³É¹¦' AS `message`, LAST_INSERT_ID() AS `comment_id`;
 END;;
 DELIMITER ;
+
 
 -- ----------------------------
 -- Stored Procedures for fastfood_shop  
 -- ----------------------------
 
--- 2. è·å–åº—é“ºè¯„åˆ†ç»Ÿè®¡çš„å­˜å‚¨è¿‡ç¨‹
+-- 2. »ñÈ¡µêÆÌÆÀ·ÖÍ³¼ÆµÄ´æ´¢¹ı³Ì
 DROP PROCEDURE IF EXISTS `sp_get_shop_score_stats`;
 DELIMITER ;;
 CREATE PROCEDURE `sp_get_shop_score_stats`(
     IN p_shop_name VARCHAR(50)
 )
 BEGIN
-    -- åº—é“ºè¯„åˆ†ç»Ÿè®¡
+    -- µêÆÌÆÀ·ÖÍ³¼Æ
     SELECT 
         fs.`shop_name`,
         fs.`avg_score`,
         fs.`total_comments`,
-        -- å„è¯„åˆ†æ•°é‡ç»Ÿè®¡
+        -- ¸÷ÆÀ·ÖÊıÁ¿Í³¼Æ
         COUNT(CASE WHEN c.`score` = 5 THEN 1 END) AS `count_5star`,
         COUNT(CASE WHEN c.`score` = 4 THEN 1 END) AS `count_4star`,
         COUNT(CASE WHEN c.`score` = 3 THEN 1 END) AS `count_3star`,
         COUNT(CASE WHEN c.`score` = 2 THEN 1 END) AS `count_2star`,
         COUNT(CASE WHEN c.`score` = 1 THEN 1 END) AS `count_1star`,
-        -- æœ€è¿‘ä¸€å‘¨è¯„è®ºæ•°
+        -- ×î½üÒ»ÖÜÆÀÂÛÊı
         COUNT(CASE WHEN c.`create_time` >= DATE_SUB(NOW(), INTERVAL 7 DAY) THEN 1 END) AS `recent_7days`
     FROM `fastfood_shop` fs
     LEFT JOIN `comments` c ON fs.`shop_name` = c.`shop_name` AND c.`is_deleted` = 0
@@ -589,109 +700,3 @@ BEGIN
     GROUP BY fs.`shop_name`, fs.`avg_score`, fs.`total_comments`;
 END;;
 DELIMITER ;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--- ----------------------------
--- Records of dispatcher
--- ----------------------------
-INSERT INTO `dispatcher` VALUES ('111111', 'è·¯äººç”²', '13811111111');
-INSERT INTO `dispatcher` VALUES ('222222', 'è·¯äººä¹™', '22222222222');
-INSERT INTO `dispatcher` VALUES ('333333', 'è·¯äººä¸™', '33333333333');
-INSERT INTO `dispatcher` VALUES ('114514', 'ä½•æ„å‘³', '44444444444');
-
--- ----------------------------
--- Records of fastfood_shop
--- ----------------------------
-INSERT INTO `fastfood_shop` (`shop_name`, `price`, `m_sale_v`, `avg_score`, `total_comments`) VALUES 
-('é¸¡å…¬ç…²', 15, 100, 4.50, 10),
-('å¤©é©¬è‡ªé€‰é¥­', 10, 200, 4.20, 15),
-('å¸ˆå¤§çƒ¤ç›˜é¥­', 12, 101, 4.30, 9),
-('éš†æ±ŸçŒªè„šé¥­', 20, 52, 4.90, 4);
-
--- ----------------------------
--- Records of oorder
--- ----------------------------
-INSERT INTO `oorder` VALUES (1, 'é¸¡å…¬ç…²', 12, 'äººå·¥è®¢é¤', '13800000000', 'æ½˜ä¿Šè¡¡', '3åŒº11', 0, '2025-12-16 14:35:17');
-INSERT INTO `oorder` VALUES (2, 'å¸ˆå¤§çƒ¤ç›˜é¥­', 10, 'äººå·¥è®¢é¤', '13811111111', 'å‚…ç¨‹å‡¯', '3åŒº11', 2, '2025-12-16 14:35:26');
-INSERT INTO `oorder` VALUES (3, 'éš†æ±ŸçŒªè„šé¥­', 20, 'äººå·¥è®¢é¤', '13511111111', 'æ€æ€', '3åŒº9', 0, '2025-12-16 14:35:35');
-
--- ----------------------------
--- Records of comments
--- ----------------------------
-INSERT INTO `comments` (`shop_name`, `username`, `telephone`, `score`, `content`) VALUES
-('é¸¡å…¬ç…²', 'æ½˜ä¿Šè¡¡', '13800000000', 5, 'å‘³é“è¶…çº§å¥½ï¼Œé¸¡è‚‰å¾ˆå«©ï¼Œé…èœä¸°å¯Œï¼'),
-('é¸¡å…¬ç…²', 'å‚…ç¨‹å‡¯', '13811111111', 3, 'å‘³é“ä¸é”™ï¼Œå°±æ˜¯æœ‰ç‚¹å’¸ï¼Œä¸‹æ¬¡å°‘æ”¾ç›'),
-('éš†æ±ŸçŒªè„šé¥­', 'æ½˜ä¿Šè¡¡', '13800000000', 5, 'çŒªè„šç‚–å¾—å¾ˆçƒ‚ï¼Œéå¸¸å…¥å‘³ï¼'),
-('å¤©é©¬è‡ªé€‰é¥­', 'æ½˜ä¿Šè¡¡', '13800000000', 4, 'æ€§ä»·æ¯”é«˜ï¼Œé€‰æ‹©å¤šæ ·');
-
--- ----------------------------
--- Records of orderway
--- ----------------------------
-INSERT INTO `orderway` VALUES ('ç½‘ä¸Šè®¢é¤', 51);
-INSERT INTO `orderway` VALUES ('äººå·¥è®¢é¤', 108);
-
--- ----------------------------
--- Records of server
--- ----------------------------
-INSERT INTO `server` VALUES ('100000', 'æœåŠ¡å‘˜0å·', 'å¸ˆå¤§çƒ¤ç›˜é¥­');
-INSERT INTO `server` VALUES ('100001', 'æœåŠ¡å‘˜1å·', 'éš†æ±ŸçŒªè„šé¥­');
-INSERT INTO `server` VALUES ('100002', 'æœåŠ¡å‘˜2å·', 'é¸¡å…¬ç…²');
-
--- ----------------------------
--- Records of user
--- ----------------------------
-INSERT INTO `user` VALUES (2, 'test0', '123456789', '13800000000', 0);
-INSERT INTO `user` VALUES (3, 'test1', '123456789', '13811111111', 0);
--- ç®¡ç†å‘˜
-INSERT INTO `user` VALUES (4, 'admin', 'admin123', '13888888888', 1);
-
--- ----------------------------
--- Records of user_msg
--- ----------------------------
-INSERT INTO `user_msg` VALUES (2, 'æ½˜ä¿Šè¡¡', 'ç”·', 20, '000000@qq.com', '13800000000', 'æ½˜ä¿Šè¡¡');
-INSERT INTO `user_msg` VALUES (3, 'å‚…ç¨‹å‡¯', 'ç”·', 20, '111111@qq.com', '13811111111', 'å‚…ç¨‹å‡¯');
-INSERT INTO `user_msg` VALUES (4, 'å‚…ç¨‹å‡¯', 'ç”·', 20, 'admin123@qq.com', '13888888888', 'å‚…ç¨‹å‡¯');
-
--- ----------------------------
--- Records of feedback
--- ----------------------------
-INSERT INTO `feedback` (`user_id`, `username`, `telephone`, `feedback_content`, `feedback_type`) VALUES
-(2, 'æ½˜ä¿Šè¡¡', '13800000000', 'é…é€é€Ÿåº¦æœ‰ç‚¹æ…¢ï¼Œå¸Œæœ›èƒ½æ”¹è¿›', 'æŠ•è¯‰'),
-(2, 'æ½˜ä¿Šè¡¡', '13800000000', 'å»ºè®®å¢åŠ æ›´å¤šä¼˜æƒ æ´»åŠ¨', 'å»ºè®®'),
-(3, 'å‚…ç¨‹å‡¯', '13811111111', 'å•†å®¶æœåŠ¡æ€åº¦å¾ˆå¥½ï¼Œç‚¹èµï¼', 'å…¶ä»–'),
-(2, 'æ½˜ä¿Šè¡¡', '13800000000', 'è®¢å•çŠ¶æ€æ›´æ–°ä¸åŠæ—¶', 'æŠ•è¯‰'),
-(3, 'å‚…ç¨‹å‡¯', '13811111111', 'å¸Œæœ›å¢åŠ æ›´å¤šçš„æ”¯ä»˜æ–¹å¼', 'å»ºè®®');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

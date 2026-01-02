@@ -441,6 +441,240 @@ def manager_sended():
                        cons_name=data[i][5], cons_addre=data[i][6], disp_id=data[i][7], deliver_time=data[i][8])
             Data.append(dic)
         return jsonify(status=200, tabledata=Data)
+    
+    
+# ============================= 新增：管理员查看所有评论 =============================
+@app.route("/api/manager/comments", methods=["GET"])
+@cross_origin()
+def manager_get_comments():
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 10, type=int)
+    shop_name = request.args.get('shop_name', '').strip()
+    offset = (page - 1) * per_page
+
+    sql = """
+        SELECT 
+            comment_id, shop_name, username, telephone, score, content, create_time 
+        FROM comments 
+        WHERE is_deleted = 0 
+    """
+    params = {}
+    
+    if shop_name:
+        sql += " AND shop_name LIKE :shop_name"
+        params['shop_name'] = f'%{shop_name}%'
+
+    sql += " ORDER BY create_time DESC LIMIT :limit OFFSET :offset"
+    params['limit'] = per_page
+    params['offset'] = offset
+
+    data = db.session.execute(text(sql), params).fetchall()
+    total_sql = "SELECT COUNT(*) FROM comments WHERE is_deleted = 0"
+    if shop_name:
+        total_sql += " AND shop_name LIKE :shop_name"
+        total_result = db.session.execute(text(total_sql), {'shop_name': f'%{shop_name}%'}).scalar()
+    else:
+        total_result = db.session.execute(text(total_sql)).scalar()
+
+    comments_list = []
+    for row in data:
+        comments_list.append({
+            "comment_id": row[0],
+            "shop_name": row[1],
+            "username": row[2],
+            "telephone": row[3],
+            "score": row[4],
+            "content": row[5],
+            "create_time": row[6].strftime('%Y-%m-%d %H:%M:%S') if row[6] else None
+        })
+
+    return jsonify({
+        "status": 200,
+        "data": comments_list,
+        "total": total_result,
+        "page": page,
+        "per_page": per_page
+    }) 
+    
+# ============================= 新增：用户提交评论 =============================
+@app.route("/api/user/add_comment", methods=["POST"])
+@cross_origin()
+def user_add_comment():
+    rq = request.json
+    order_id = rq.get("order_id")          # 订单ID（可选，用于关联）
+    shop_name = rq.get("shop_name")
+    score = rq.get("score")                # 1-5
+    content = rq.get("content", "").strip()
+
+    # 从 token 获取当前用户信息
+    token = request.headers.get('token')
+    if not token:
+        return jsonify(status=1000, msg="未登录")
+    
+    user_info = auth.decode_func(token)
+    telephone = user_info.get('telephone')
+    username = user_info.get('username')
+
+    if not all([shop_name, score, telephone]):
+        return jsonify(status=1000, msg="参数缺失")
+
+    if not 1 <= int(score) <= 5:
+        return jsonify(status=1000, msg="评分必须在1-5之间")
+
+
+# ==============检查该用户是否已经对这个店铺评价过（可选：一个用户只能评一次）================
+    exist = db.session.execute(
+        text("SELECT 1 FROM comments WHERE shop_name = :shop AND telephone = :tel AND is_deleted = 0"),
+        {"shop": shop_name, "tel": telephone}
+    ).fetchone()
+
+    if exist:
+        return jsonify(status=1000, msg="您已评价过该店铺")
+
+    # 插入评论
+    try:
+        db.session.execute(
+            text("""
+                INSERT INTO comments 
+                (shop_name, username, telephone, score, content) 
+                VALUES (:shop, :username, :tel, :score, :content)
+            """),
+            {
+                "shop": shop_name,
+                "username": username,
+                "tel": telephone,
+                "score": int(score),
+                "content": content
+            }
+        )
+        db.session.commit()
+        return jsonify(status=200, msg="评价成功")
+    except Exception as e:
+        db.session.rollback()
+        print(e)
+        return jsonify(status=1000, msg="评价失败，请重试")
+
+
+# ============================= 新增：检查用户是否已评价该店铺 =============================
+@app.route("/api/user/has_commented", methods=["GET"])
+@cross_origin()
+def user_has_commented():
+    shop_name = request.args.get("shop_name")
+    token = request.headers.get('token')
+    if not token or not shop_name:
+        return jsonify(status=1000, msg="参数错误")
+
+    user_info = auth.decode_func(token)
+    telephone = user_info.get('telephone')
+
+    exist = db.session.execute(
+        text("SELECT 1 FROM comments WHERE shop_name = :shop AND telephone = :tel AND is_deleted = 0"),
+        {"shop": shop_name, "tel": telephone}
+    ).fetchone()
+
+    return jsonify(status=200, has_commented=bool(exist))
+    
+    
+# ============================= 新增：管理员删除评论 =============================
+@app.route("/api/manager/comments/<int:comment_id>", methods=["DELETE"])
+@cross_origin()
+def delete_comment(comment_id):
+    try:
+        result = db.session.execute(
+            text("UPDATE comments SET is_deleted = 1 WHERE comment_id = :id"),
+            {"id": comment_id}
+        )
+        if result.rowcount == 0:
+            return jsonify(status=1000, msg="评论不存在或已被删除")
+        
+        db.session.commit()
+        
+        # 触发器会自动更新店铺 avg_score 和 total_comments
+        return jsonify(status=200, msg="删除成功")
+    except Exception as e:
+        db.session.rollback()
+        print(e)  # 建议打印错误，便于调试
+        return jsonify(status=1000, msg="删除失败，服务器错误")   
+    
+# ============================= 新增：管理员确认订单完成 =============================
+@app.route("/api/manager/confirm_order_complete", methods=["POST"])
+@cross_origin()
+def manager_confirm_order_complete():
+    rq = request.json
+    order_id = rq.get("order_id")
+
+    if not order_id:
+        return jsonify(status=1000, msg="订单ID缺失")
+
+    # 更新 oorder 的 checked 为 2（已完成）
+    result = db.session.execute(
+        text("UPDATE oorder SET checked = 2 WHERE order_id = :oid AND checked = 1"),
+        {"oid": int(order_id)}
+    )
+
+    if result.rowcount == 0:
+        return jsonify(status=1000, msg="订单不存在或已完成")
+
+    db.session.commit()
+    return jsonify(status=200, msg="订单已标记为完成")
+
+
+# ============================= 新增：用户确认收货（将订单标记为已完成） =============================
+@app.route("/api/user/confirm_received", methods=["POST"])
+@cross_origin()
+def user_confirm_received():
+    rq = request.json
+    order_id = rq.get("order_id")
+
+    if not order_id:
+        return jsonify(status=1000, msg="订单ID缺失")
+
+    # 从 token 获取用户手机号，确保只能操作自己的订单
+    token = request.headers.get('token')
+    if not token:
+        return jsonify(status=1000, msg="未登录")
+
+    user_info = auth.decode_func(token)
+    cons_phone = user_info.get('telephone')
+
+    # 更新订单状态：checked = 2（已完成），且只能更新自己的、正在进行的订单
+    result = db.session.execute(
+        text("""
+            UPDATE oorder 
+            SET checked = 2 
+            WHERE order_id = :oid 
+              AND cons_phone = :phone 
+              AND checked = 1
+        """),
+        {"oid": int(order_id), "phone": cons_phone}
+    )
+
+    if result.rowcount == 0:
+        return jsonify(status=1000, msg="订单不存在、无权操作或已完成")
+
+    db.session.commit()
+    return jsonify(status=200, msg="订单已完成")
+
+# ============================= 新增：物流完成订单 =============================
+@app.route("/api/manager/complete_delivery", methods=["POST"])
+@cross_origin()
+def complete_delivery():
+    order_id = request.json.get("order_id")
+    result = db.session.execute(
+        text("UPDATE wuliu SET ended = 1 WHERE order_id = :oid AND ended = 0"),
+        {"oid": order_id}
+    )
+    if result.rowcount > 0:
+        db.session.commit()
+        return jsonify(status=200, msg="已完成")
+    return jsonify(status=1000, msg="操作失败")
+
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port='5000')
     # 开启了debug模式
+    
+    
+    
+    
+    
+

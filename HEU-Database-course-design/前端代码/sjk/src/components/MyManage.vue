@@ -37,6 +37,11 @@
 
                     </el-submenu>
 
+                  <!-- 在订单管理 <el-submenu index="100"> 之前添加 -->
+                  <el-menu-item index="9">
+                    <i class="el-icon-chat-dot-round"></i>
+                    <span slot="title">评论管理</span>
+                  </el-menu-item>
 
                     <el-submenu index="100">
                         <template slot="title">
@@ -85,6 +90,10 @@
                 <div id="orderunsend" v-show="active == 8">
                     <orderunsend></orderunsend>
                 </div>
+              <!-- 在其他 div 后面添加 -->
+              <div id="managecomments" v-show="active == 9">
+                <managecomments></managecomments>
+              </div>
             </div>
         </div>
       <div class="footer">
@@ -102,6 +111,8 @@ import wuliuunended from '@/components/ManageWuliu/WuliuUnended.vue'
 import ordersended from '@/components/ManageOrder/BeSended.vue'
 import ordersending from '@/components/ManageOrder/BeSending.vue'
 import orderunsend from '@/components/ManageOrder/UnSend.vue'
+import managecomments from '@/components/ManageComments.vue'
+
 export default {
     components: {
         manageshop: manageshop,
@@ -111,7 +122,8 @@ export default {
         wuliuunended: wuliuunended,
         ordersended: ordersended,
         ordersending: ordersending,
-        orderunsend: orderunsend
+        orderunsend: orderunsend,
+        managecomments: managecomments,
     },
     data() {
         return {
