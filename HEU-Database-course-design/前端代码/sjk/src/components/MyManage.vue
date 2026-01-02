@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="header">
-            &nbsp;&nbsp; 哈尔滨工程大学外卖平台---后台管理
+            &nbsp;&nbsp; HNU外卖平台---后台管理
         </div>
         <div class="body">
             <div class="liner">
@@ -87,6 +87,9 @@
                 </div>
             </div>
         </div>
+      <div class="footer">
+        致谢@HEU吴方
+      </div>
     </div>
 </template>
 
@@ -150,5 +153,16 @@ export default {
 
 .main {
     width: 85%;
+}
+
+.footer {
+  width: 100%;
+  height: 16px;
+  line-height: 16px;
+  text-align: center;
+  background-color: #ffffff;
+  /* margin: 0 auto;   */
+  color: #545c64;
+  font-size: 12px;
 }
 </style>

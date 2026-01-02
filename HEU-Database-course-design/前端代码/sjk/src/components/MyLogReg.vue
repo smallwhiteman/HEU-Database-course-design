@@ -2,7 +2,7 @@
     <div class="container">
         <div class="login_box">
             <div class="head">
-                哈工程外卖平台
+                HNU外卖平台
             </div>
             <!-- 登录 -->
             <div v-show="target == 1">
@@ -38,7 +38,7 @@
         <!-- 注册表单 -->
         <div class="reg_box" v-show="target == 2">
             <div class="head">
-                哈工程外卖平台
+                HNU外卖平台
             </div>
             <div>
                 <el-form class="reg_form" :model="reg_form" :rules="reg_rules" ref="reg_form">
@@ -88,7 +88,7 @@
 <!-- 找回密码 -->
         <div class="forget_box" v-show="target == 3">
             <div class="head">
-                哈工程外卖平台
+                HNU外卖平台
             </div>
             <div>
                 <el-form class="reg_form" :model="findback_form" :rules="findback_rules" ref="findback_form">
